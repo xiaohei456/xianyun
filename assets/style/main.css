@@ -1,0 +1,25 @@
+.page-enter-active, .page-leave-active {
+  transition: opacity .5s;
+}
+.page-enter, .page-leave-active {
+  opacity: 0;
+}
+/* 版心 */
+.bx{
+    width:1000px;
+    margin:0 auto;
+}
+/* 去除默认间距 */
+*{
+    margin:0;
+    padding:0;
+}
+/* a标签设置颜色可继承 */
+a{
+    color:inherit;
+    text-decoration: none;
+}
+ul,
+ol{
+  list-style:none;
+}
