@@ -111,6 +111,12 @@ export default {
         this.air_form.departDate
       ) {
         this.$router.push({ path: "/air/ticket", query: this.air_form });
+        // 把搜索记录储存在本地
+        // 先获取本地存储记录
+        var arr=JSON.parse(localStorage.getItem('search_ticket'))||[]
+        arr.unshift(this.air_form)
+        localStorage.setItem('search_ticket',JSON.stringify(arr))
+
       } else {
         this.$message("请完成表单");
       }

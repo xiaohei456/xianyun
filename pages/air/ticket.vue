@@ -4,7 +4,14 @@
     <div class="main">
       <!-- 机票头部筛选部分 -->
       <div class="top">
-        <filterTicket :ticketData="ticketData" />
+        <!-- 切记传递子组件数据如果是对象点的方式，要确保不是underfine，至少要在data里面先定义成空对象:{} -->
+        <!-- // 不然子组件将接收到一个underfine，如果进行一些操作可能会直接崩掉 -->
+        <filterTicket
+          v-if="ticketData.flights.length"
+          :info="ticketData.info"
+          :options="ticketData.options"
+          @fliter="fliterTicket"
+        />
       </div>
       <!-- 机票导航栏 -->
       <div class="nav">
@@ -51,7 +58,7 @@
       <div class="history">
         <h3>历史查询</h3>
         <ul>
-          <li>
+          <li v-for='(item,index) in search_arr' :key='index'>
             <div class="info">
               <p>天津-天水</p>
               <span>2019-13-32</span>
@@ -77,7 +84,13 @@ export default {
   data() {
     return {
       // 机票详情数据
-      ticketData: {},
+      ticketData: {
+        flights: {},
+        options: {},
+        info: {}
+      },
+      // 经过筛选之后要渲染的机票列表数据
+      fliterList:{},
       // 当前页面要显示的机票列表数据
       currentData: {},
       // 机票总数量
@@ -85,7 +98,9 @@ export default {
       // 当前页码
       pageIndex: 1,
       // 每一页的容量
-      pageSize: 10
+      pageSize: 10,
+      // 搜索记录
+      search_arr:JSON.parse(localStorage.getItem('search_ticket'))||[]
     };
   },
   mounted() {
@@ -109,6 +124,9 @@ export default {
         this.$axios.get("/airs", { params: form }).then(res => {
           // 所有的机票列表数据
           this.ticketData = res.data;
+          console.log(res.data)
+          // 此时筛选对的数据等于全部数据
+          this.fliterList=res.data
           // 所有的机票总量
           this.total = res.data.total;
           // 当前页面需要展示的数据
@@ -124,10 +142,12 @@ export default {
       } else {
         // 如果不是第一次请求数据了，那么本地已经有了数据，就不用再发送axios取请求数据了
         // 需要展示在当前页面的机票列表数据是
-        this.currentData = this.ticketData.flights.slice(
+        this.currentData = this.fliterList.slice(
           (this.pageIndex - 1) * this.pageSize,
           this.pageIndex * this.pageSize
         );
+        // 总量
+        this.total = this.currentData.length;
       }
     },
     handleSizeChange(value) {
@@ -142,6 +162,41 @@ export default {
       // 把当前页码改变
       this.pageIndex = value;
       // 获取到当前页面需要展示的数据列表
+      this.getData();
+    },
+    fliterTicket(filter) {
+      // 子组件的筛选条件发送改变时，发射的事件
+      // 参数是下拉选项的值
+      console.log(filter);
+      var { airport, flightTimes, company, size } = filter;
+      // 根据筛选条件去筛选ticketData的数据
+      // 查找ticketData
+      this.fliterList = this.ticketData.flights.filter(v => {
+        // 只有满足起飞机场，起飞时间，航空公司，机型的机票才能返回true
+        // 满足起飞机场:string
+        var isOk1 = airport === "" || v.org_airport_name === airport;
+        // 满足起飞时间：6|12 string
+        // 开始时间
+        var from = +flightTimes.split("|")[0];
+        // 结束时间
+        var to = +flightTimes.split("|")[1];
+        // 获取出发时间
+        var dep_from = +v.dep_time.split(":")[0];
+        var dep_to = +v.dep_time.split(":")[1];
+        if (dep_to === 0) {
+          var isOk2 =
+            flightTimes === "" || (dep_from >= from && dep_from <= to);
+        } else {
+          var isOk2 = flightTimes === "" || (dep_from >= from && dep_from < to);
+        }
+        // 满足航空公司 string
+        var isOk3 = company === "" || v.airline_name === company;
+        // 满足机型
+        var isOk4 = size === "" || v.plane_size === size;
+
+        return isOk1 && isOk2 && isOk3 && isOk4;
+      });
+      // 筛选完成后，拿筛选后的数据重新生成该页面需要展示的数据列表
       this.getData();
     }
   }
@@ -170,10 +225,9 @@ export default {
   .kefu {
     flex: 1;
     padding-left: 10px;
-     width: 240px;
-     
+    width: 240px;
+
     .tel {
-     
       height: 120px;
       display: flex;
       flex-direction: column;
@@ -208,37 +262,33 @@ export default {
         padding: 5px;
       }
     }
-    .history{
-      border:1px solid #ccc;
-      padding:10px;
-      margin-top:10px;
-      h3{
-        line-height:40px;
-        font-size:18px;
-        font-weight:300;
-        border-bottom:1px solid #ccc;
-
+    .history {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 10px;
+      h3 {
+        line-height: 40px;
+        font-size: 18px;
+        font-weight: 300;
+        border-bottom: 1px solid #ccc;
       }
-      ul{
-        li{
-          display:flex;
+      ul {
+        li {
+          display: flex;
           justify-content: space-between;
-          font-size:14px;
-          height:50px;
+          font-size: 14px;
+          height: 50px;
           align-items: center;
           cursor: pointer;
-          .info{
-            span{
-              font-size:10px;
+          .info {
+            span {
+              font-size: 10px;
             }
-
           }
-          .btn{
-
+          .btn {
           }
         }
       }
-
     }
   }
 }

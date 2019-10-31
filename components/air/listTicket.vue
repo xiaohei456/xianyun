@@ -6,13 +6,14 @@
       <div class="title" @click='isDown=!isDown'>
         <div>{{item.airline_name}}{{item.flight_no}}</div>
         <div>
-          <p>{{item.arr_time}}</p>
-          <p>{{item.dst_airport_name}}{{item.dst_airport_quay}}</p>
+            <p>{{item.dep_time}}</p>
+          <p>{{item.org_airport_name}}{{item.org_airport_quay}}</p>
+          
         </div>
         <span class="time">2时15分</span>
         <div>
-          <p>{{item.dep_time}}</p>
-          <p>{{item.org_airport_name}}{{item.org_airport_quay}}</p>
+          <p>{{item.arr_time}}</p>
+          <p>{{item.dst_airport_name}}{{item.dst_airport_quay}}</p>
         </div>
         <div>
           ￥<span class='jiage'>{{item.base_price}}</span>起
