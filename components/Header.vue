@@ -11,28 +11,53 @@
             v-for="(item,index) in linkList"
             :key="item.id"
             :class="{active:linkIndex===index}"
-            
-          ><div @click='linkIndex=index'>{{item.name}}</div></nuxt-link>
+          >
+            <div @click="linkIndex=index">{{item.name}}</div>
+          </nuxt-link>
         </div>
-        <div class='right'  v-if='userInfo.token'>
-         
+        <div class="right" v-if="userInfo.token">
+           <el-dropdown>
+            <div>
+              <i class="el-icon-bell"></i>
+              <span>消息</span>
+              <i class="el-icon-caret-bottom"></i>
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>消息</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>&nbsp;&nbsp;&nbsp;
           <el-dropdown>
-  <div >
-     <span>
-            <img :src="$axios.defaults.baseURL+userInfo.user.defaultAvatar" alt="" style='width:20px'>
-          </span>
-          <span>{{userInfo.user.username}}</span><i class="el-icon-arrow-down el-icon--right"></i>
-  </div>
-  <el-dropdown-menu slot="dropdown">
-    <el-dropdown-item>个人中心</el-dropdown-item>
-    <el-dropdown-item><div @click='outLogin'>退出</div></el-dropdown-item>
-    
-  </el-dropdown-menu>
-</el-dropdown>
+            <div>
+              <span>
+                <img
+                  :src="$axios.defaults.baseURL+userInfo.user.defaultAvatar"
+                  alt
+                  style="width:26px"
+                />
+              </span>
+              <span>{{userInfo.user.username}}</span>
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>个人中心</el-dropdown-item>
+              <el-dropdown-item>
+                <div @click="outLogin">退出</div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
         <div class="right" v-else>
-          <nuxt-link to="/">消息</nuxt-link>
-          <nuxt-link to="/user/login/0">登录 / 注册</nuxt-link>
+          <el-dropdown>
+            <div>
+              <i class="el-icon-bell"></i>
+              <span>消息</span>
+              <i class="el-icon-caret-bottom"></i>
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>消息</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <nuxt-link to="/user/login/0" class="toLogin">登录 / 注册</nuxt-link>
         </div>
       </div>
     </div>
@@ -61,35 +86,33 @@ export default {
           path: "/air"
         }
       ],
-      linkIndex: ''
+      linkIndex: ""
     };
   },
-  mounted(){
+  mounted() {
     // 获取本地储存
-    var info=localStorage.getItem('xianyun_userInfo')
-    if(info){
+    var info = localStorage.getItem("xianyun_userInfo");
+    if (info) {
       // 把值赋值给user仓库
-      this.$store.commit('user/editInfo',JSON.parse(info))
+      this.$store.commit("user/editInfo", JSON.parse(info));
     }
   },
   computed: {
-    userInfo(){
-      return this.$store.state.user.userInfo
+    userInfo() {
+      return this.$store.state.user.userInfo;
     }
-
   },
   methods: {
-    outLogin(){
+    outLogin() {
       // 清除本地存储的·数据
-      localStorage.removeItem('xianyun_user')
+      localStorage.removeItem("xianyun_userInfo");
       // 清除仓库的数据
-      this.$store.commit('user/editInfo',{token:"",user:{}})
+      this.$store.commit("user/editInfo", { token: "", user: {} });
       // 提示退出登录成功
-    this.$message('退出成功')
+      this.$message("退出成功");
       // 再跳转到登录页面，显示登录
       setTimeout(() => {
-      this.$router.push('/user/login/0')
-        
+        this.$router.push("/user/login/0");
       }, 1000);
     }
   }
@@ -98,50 +121,48 @@ export default {
 
 <style lang='less' scoped>
 .header {
-  border-bottom:1px solid #ddd;
+  border-bottom: 1px solid #ddd;
   box-shadow: 0 0 5px #ddd;
   .bx {
     display: flex;
     justify-content: space-between;
-height:60px;
+    height: 60px;
     .left {
       display: flex;
       align-items: center;
-      h1{
-        margin-right:20px;
-        img{
-          width:170px;
+      h1 {
+        margin-right: 20px;
+        img {
+          width: 170px;
         }
       }
-      a{
-        height:100%;
-        position:relative;
-        div{
-          padding:0 20px;
-          height:100%;
+      a {
+        height: 100%;
+        position: relative;
+        div {
+          padding: 0 20px;
+          height: 100%;
           display: flex;
-      align-items: center;
-     &:hover{
-       position:relative;
-        color:#0094ff;
-      &::before{
-        position:absolute;
-        content:'';
-        width:100%;
-        height:3px;
-        bottom:0;
-        left:0;
-        background-color: #0094ff;
-
-      }
-     }
+          align-items: center;
+          &:hover {
+            position: relative;
+            color: #0094ff;
+            &::before {
+              position: absolute;
+              content: "";
+              width: 100%;
+              height: 3px;
+              bottom: 0;
+              left: 0;
+              background-color: #0094ff;
+            }
+          }
         }
-      
-        &.active{
-          background-color: #0094ff;
-          div{
-          color:#fff !important;
 
+        &.active {
+          background-color: #0094ff;
+          div {
+            color: #fff !important;
           }
         }
       }
@@ -149,17 +170,22 @@ height:60px;
     .right {
       display: flex;
       align-items: center;
-      
-      img{
-        vertical-align:text-bottom;
+      cursor: pointer;
+      img {
+        vertical-align:middle;
       }
-      a{
-        font-size:14px;
-        margin:0 10px;
+      a {
+        font-size: 13px;
+        margin: 0 10px;
+        color:#666;
       }
-      
+      .toLogin {
+        &:hover {
+          color: #0094ff;
+          text-decoration: underline;
+        }
+      }
     }
-    
   }
 }
 </style>

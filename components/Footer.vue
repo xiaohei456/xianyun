@@ -73,6 +73,7 @@ export default {};
   padding-top:40px;
   font-weight: 300;
   .bx{
+    cursor: pointer;
     .main{
       display:flex;
       padding-bottom:40px;

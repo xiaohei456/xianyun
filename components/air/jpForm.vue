@@ -19,7 +19,7 @@
             style="width:220px;"
           ></el-autocomplete>
         </el-form-item>
-        <div class="changeItem" @click='changeCity'>换</div>
+        <div class="changeItem" @click="changeCity">换</div>
         <el-form-item label="目标城市">
           <el-autocomplete
             class="inline-input"
@@ -40,7 +40,7 @@
           ></el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button @click="fly" style="width:220px;" type="primary">搜索</el-button>
+          <el-button @click="searchTicket" style="width:220px;" type="primary">搜索</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -55,15 +55,11 @@ export default {
       current: 0,
       //  获取机票数据所有参数
       air_form: {
-        departCity: "",
-
-        departCode: "",
-
-        destCity: "",
-
-        destCode: "",
-
-        departDate: ""
+        departCity: "北京",
+        departCode: "BJS",
+        departDate: "2019-11-08",
+        destCity: "上海",
+        destCode: "SHA"
       }
     };
   },
@@ -79,9 +75,13 @@ export default {
           .get("/airs/city", { params: { name: queryString } })
           .then(res => {
             var arr = res.data.data;
+            console.log(arr)
             arr.forEach(v => {
-              v.value = v.name;
+              v.value = v.name
+              var index=v.name.indexOf('市')
+              v.name=v.name.substring(0,index)
             });
+            console.log(arr)
             callback(arr);
           });
       }
@@ -97,14 +97,38 @@ export default {
       this.air_form.destCity = item.name;
       this.air_form.destCode = item.sort;
     },
-    fly() {
-      console.log(this.air_form);
+    searchTicket() {
+      // console.log(this.air_form);
+      // departCity: "北京市";
+      // departCode: "BJS";
+      // departDate: "2019-10-31";
+      // destCity: "天津市";
+      // destCode: "TSN";
+      // 跳转页面并传递参数
+      if (
+        this.air_form.departCode &&
+        this.air_form.destCity &&
+        this.air_form.departDate
+      ) {
+        this.$router.push({ path: "/air/ticket", query: this.air_form });
+      } else {
+        this.$message("请完成表单");
+      }
     },
-  // 切换出发，到达城市
-  changeCity(){
-    [this.air_form.departCity,this.air_form.departCode,this.air_form.destCity,this.air_form.destCode]=
-    [this.air_form.destCity,this.air_form.destCode,this.air_form.departCity,this.air_form.departCode]
-  }
+    // 切换出发，到达城市
+    changeCity() {
+      [
+        this.air_form.departCity,
+        this.air_form.departCode,
+        this.air_form.destCity,
+        this.air_form.destCode
+      ] = [
+        this.air_form.destCity,
+        this.air_form.destCode,
+        this.air_form.departCity,
+        this.air_form.departCode
+      ];
+    }
   }
 };
 </script>
@@ -145,41 +169,39 @@ export default {
   }
   .form_main {
     padding: 10px 30px 10px 10px;
-    position:relative;
-    .changeItem{
-      position:absolute;
+    position: relative;
+    .changeItem {
+      position: absolute;
       background-color: #666;
-      color:#fff;
-      top:50px;
-      right:20px;
-      width:20px;
-      height:20px;
-      display:flex;
+      color: #fff;
+      top: 50px;
+      right: 20px;
+      width: 20px;
+      height: 20px;
+      display: flex;
       justify-content: center;
-      align-items:center;
-      font-size:12px;
+      align-items: center;
+      font-size: 12px;
       cursor: pointer;
-      &::before{
-        content:'';
-        width:20px;
-        height:20px;
-        border-right:1px solid #ccc;
-        border-top:1px solid #ccc;
-        position:absolute;
-        top:-21px;
-        left:-9px;
-
+      &::before {
+        content: "";
+        width: 20px;
+        height: 20px;
+        border-right: 1px solid #ccc;
+        border-top: 1px solid #ccc;
+        position: absolute;
+        top: -21px;
+        left: -9px;
       }
-      &::after{
-        content:'';
-        width:20px;
-        height:24px;
-        border-right:1px solid #ccc;
-        border-bottom:1px solid #ccc;
-        position:absolute;
-        top:20px;
-        left:-9px;
-
+      &::after {
+        content: "";
+        width: 20px;
+        height: 24px;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        position: absolute;
+        top: 20px;
+        left: -9px;
       }
     }
   }
