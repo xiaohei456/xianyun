@@ -50,7 +50,7 @@ export default {
       })
       .then(res => {
         this.orderInfo = res.data;
-        console.log(res);
+        // console.log(res);
         this.code_url = res.data.payInfo.code_url;
         let canvas = document.getElementById("canvas");
         QRCode.toCanvas(canvas, this.code_url, function(error) {

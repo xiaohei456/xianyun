@@ -35,7 +35,7 @@ export default {
         this.$axios.get('/posts/cities')
         .then(res=>{
             this.options=res.data.data
-            console.log(this.options)
+            // console.log(this.options)
         })
     }
 

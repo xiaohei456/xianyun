@@ -14,6 +14,9 @@
     </div>
     <!-- 酒店列表下拉筛选 -->
     <!-- 酒店列表显示 -->
+    <div class="main">
+      <hotelList/>
+    </div>
   </div>
 </template>
 
@@ -21,6 +24,7 @@
 // 引入组件
 import Describe from "@/components/hotel/describe.vue";
 import Strategy from "@/components/hotel/strategy.vue";
+import hotelList from "@/components/hotel/hotelList.vue"
 export default {
   data() {
     return {
@@ -47,7 +51,7 @@ export default {
   },
   //   注册组件
   components: {
-    Describe,Strategy
+    Describe,Strategy,hotelList
   }
 };
 </script>

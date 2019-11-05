@@ -41,7 +41,7 @@ mounted () {
       this.insurances=res.data.insurances
     //   机票数据
       this.ticketData=res.data
-      console.log(res)
+      // console.log(res)
     })
 },
 components: {

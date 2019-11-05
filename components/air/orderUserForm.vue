@@ -155,7 +155,7 @@ export default {
     // 提交订单
     commitOrder(){
         // 获取数据
-        console.log(this.form)
+        // console.log(this.form)
         // 验证数据-假设验证通过
         let isok=true
         // 检查乘机人信息
@@ -186,7 +186,7 @@ export default {
         // 发送axios请求提交订单
         // 从仓库获取token值
         let token=this.$store.state.user.userInfo.token
-        console.log(token)
+        // console.log(token)
         this.$axios.post('/airorders',this.form,{headers:{
             Authorization: `Bearer ${token}` 
         }})

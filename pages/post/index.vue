@@ -5,12 +5,13 @@
           <Nav/>
           <div class='city'>推荐城市</div>
           <img src="http://157.122.54.189:9093/images/pic_sea.jpeg" alt="">
+          <input type="hidden" v-model="city" >
 
       </div>
       <div class="main">
           <!-- 搜索 -->
           <div class="search">
-              <input type="text" v-model='city' >
+              <input type="text" v-model='inpvalue' @blur='inpBlur'>
               <i class="el-icon-zoom-out fdj"></i>
               <p><span>推荐：</span><span>广州</span><span>上海</span><span>北京</span></p>
           </div>
@@ -33,7 +34,9 @@ import postList from "@/components/post/postList.vue"
 export default {
     data(){
         return {
-            postList:[]
+            postList:[],
+            inpvalue:this.$route.query.city
+    
         }
 
     },
@@ -53,6 +56,12 @@ export default {
             })
             return this.$route.query.city
         }
+    },
+    methods: {
+        
+    inpBlur(){
+        this.$router.push({path:'/post',query:{city:this.inpvalue}})
+    }
     }
 
 }

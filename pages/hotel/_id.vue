@@ -49,7 +49,9 @@
       </div>
     </div>
     <!-- 地图 -->
-    <div class="map"></div>
+    <div class="mapbox">
+      <Map/>
+    </div>
     <!-- 基本信息 -->
     <div class="info">
       <!-- 基本信息 -->
@@ -98,28 +100,36 @@
 </template>
 
 <script>
+// 引入组件
+import Map from "@/components/hotel/Map.vue"
 export default {
   data() {
     return {
       // 酒店详情
-      hoteldata: {}
+      hoteldata: {
+      }
     };
   },
   mounted() {
     // 获取参数酒店id
-    const id = this.$route.params.id;
+    const id = +this.$route.params.id;
+    
     // 获取酒店数据
     // 发送axios请求
-    this.$axios.get("/hotels", { params: { id } }).then(res => {
+    this.$axios.get("/hotels", { params: { id} }).then(res => {
       // console.log(res)
       this.hoteldata = res.data.data[0];
       console.log(this.hoteldata);
+      // debugger
     });
   },
   methods: {
     href(){
       location.href='https://hotels.ctrip.com/hotel/694679.html'
     }
+  },
+  components:{
+    Map
   }
 };
 </script>
@@ -214,9 +224,8 @@ img{
       }
     }
   }
-  .map{
-    height:360px;
-    background-color: #ccc;
+  .mapbox{
+    height:360px;;
     margin:30px 0;
   }
   .info{

@@ -1,7 +1,7 @@
 <template>
   <div class="post_item">
     <!-- 单个文章显示 -->
-    <div>
+    <div  @click='$router.push({path:"/post/details",query:{id:postItem.id}})'>
       <div class="title">{{postItem.title}}</div>
       <div
         class="content"
@@ -57,6 +57,8 @@ export default {
             font-size:14px;
             line-height:22px;
             color:#666;
+            max-height:180px;
+            overflow: hidden;
         }
         .imges{
             display:flex;

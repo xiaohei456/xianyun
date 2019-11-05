@@ -63,10 +63,10 @@ export default {
       this.$refs.ruleForm.validate(val => {
         if (val) {
           var { password2, ...form } = this.RegisterForm;
-          console.log(form);
+          // console.log(form);
           // 发送请求注册用户
           this.$axios.post("/accounts/register", form).then(res => {
-            console.log(res);
+            // console.log(res);
             if (res.status === 200) {
               if (res.data.token) {
                 this.$message("注册成功，去登陆吧。");

@@ -27,7 +27,7 @@ export default {
     // 发送请求获取数据
     this.$axios.get("/scenics/banners").then(res => {
       this.sw_imges = res.data.data;
-      console.log(this.sw_imges);
+      // console.log(this.sw_imges);
     });
   },
   // 注册组件

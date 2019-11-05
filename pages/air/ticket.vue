@@ -125,7 +125,7 @@ export default {
         this.$axios.get("/airs", { params: form }).then(res => {
           // 所有的机票列表数据
           this.ticketData = res.data;
-          console.log(res.data)
+          // console.log(res.data)
           // 此时筛选对的数据等于全部数据
           this.fliterList=res.data.flights
           // 所有的机票总量
@@ -169,7 +169,7 @@ export default {
     fliterTicket(filter) {
       // 子组件的筛选条件发送改变时，发射的事件
       // 参数是下拉选项的值
-      console.log(filter);
+      // console.log(filter);
       var { airport, flightTimes, company, size } = filter;
       // 根据筛选条件去筛选ticketData的数据
       // 查找ticketData

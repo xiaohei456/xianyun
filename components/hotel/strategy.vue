@@ -83,6 +83,7 @@ export default {
     }
   },
   mounted() {
+    setTimeout(() => {
     let that = this;
     window.onload = function() {
       //    初始化显示酒店列表地图
@@ -93,8 +94,8 @@ export default {
           that.hotelList[0].location.latitude
         ] //中心点坐标
       });
-      var toolbar = new AMap.ToolBar();
-      map.addControl(toolbar);
+      // var toolbar = new AMap.ToolBar();
+      // map.addControl(toolbar);
       that.hotelList.forEach((v, i) => {
         var marker = new AMap.Marker({
           position: new AMap.LngLat(v.location.longitude, v.location.latitude),
@@ -103,6 +104,7 @@ export default {
         map.add(marker);
       });
     };
+    }, 1000);
 
     var url =
       "https://webapi.amap.com/maps?v=1.4.15&key=06e5e393fbd4f45a92a091aefe6ff8e3&callback=onload&plugin=AMap.ToolBar";
@@ -110,14 +112,16 @@ export default {
     jsapi.charset = "utf-8";
     jsapi.src = url;
     document.head.appendChild(jsapi);
+      
     // 获取城市景点
     this.$axios.get("/cities", { params: { name: "南京" } }).then(res => {
       this.scenics = res.data.data[0].scenics;
     });
+    
   },
   watch: {
     hotelList() {
-      console.log(this.hotelList);
+      // console.log(this.hotelList);
     }
   }
 };

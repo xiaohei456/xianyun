@@ -70,7 +70,7 @@ export default {
     //    this.options.airport.forEach(v=>{
     //        v && airport.push({value:v,label:v})
     //    })
-    console.log(this.options)
+    // console.log(this.options)
     airport=this.options.airport.map(v=>{
         return {value:v,label:v||"全部机场"}
     })
