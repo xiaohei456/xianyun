@@ -114,6 +114,14 @@ export default {
         // 把搜索记录储存在本地
         // 先获取本地存储记录
         var arr=JSON.parse(localStorage.getItem('search_ticket'))||[]
+        var index=arr.findIndex(v=>{
+          return JSON.stringify(v)===JSON.stringify(this.air_form)
+        })
+        console.log(index)
+        // 如果存在相同的历史数据，把旧的删除
+        if(index!==-1){
+         arr.splice(index,1)
+        }
         arr.unshift(this.air_form)
         localStorage.setItem('search_ticket',JSON.stringify(arr))
 

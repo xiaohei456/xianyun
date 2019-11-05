@@ -3,12 +3,11 @@
     <!-- 这里是机票展示列表 -->
     <div class="single">
       <!-- 机票 主要内容 -->
-      <div class="title" @click='isDown=!isDown'>
+      <div class="title" @click="isDown=!isDown">
         <div>{{item.airline_name}}{{item.flight_no}}</div>
         <div>
-            <p>{{item.dep_time}}</p>
+          <p>{{item.dep_time}}</p>
           <p>{{item.org_airport_name}}{{item.org_airport_quay}}</p>
-          
         </div>
         <span class="time">2时15分</span>
         <div>
@@ -16,14 +15,15 @@
           <p>{{item.dst_airport_name}}{{item.dst_airport_quay}}</p>
         </div>
         <div>
-          ￥<span class='jiage'>{{item.base_price}}</span>起
+          ￥
+          <span class="jiage">{{item.base_price}}</span>起
         </div>
       </div>
       <!-- 机票详情 -->
-      <div class="details" v-show='isDown'>
+      <div class="details" v-show="isDown">
         <div class="left">低价推荐</div>
         <div class="right">
-          <div class="ticket" v-for='value in item.seat_infos' :key='value.index'>
+          <div class="ticket" v-for="value in item.seat_infos" :key="value.index">
             <div>
               <span>{{value.group_name}}</span>|
               <span>{{value.supplierName}}</span>
@@ -31,7 +31,11 @@
             <div>
               <span>￥{{value.settle_price}}</span>
               <div>
-                <el-button size="mini" type="warning" style="width:100%;">选定</el-button>
+                <el-button size="mini" type="warning" style="width:100%;">
+                  <div
+                    @click='$router.push({path:"/air/order",query:{seat_xid:value.seat_xid,id:item.id}})'
+                  >选定</div>
+                </el-button>
                 <p>剩余：45</p>
               </div>
             </div>
@@ -44,11 +48,11 @@
 
 <script>
 export default {
-    data(){
-        return {
-            isDown:false
-        }
-    },
+  data() {
+    return {
+      isDown: false
+    };
+  },
   // 通过父传子的方式获取到机票列表数据
   props: {
     item: {
@@ -76,9 +80,9 @@ export default {
       height: 88px;
       align-items: center;
       position: relative;
-      .jiage{
-          color:orange;
-          font-size:20px;
+      .jiage {
+        color: orange;
+        font-size: 20px;
       }
       .time {
         position: absolute;
@@ -92,7 +96,7 @@ export default {
       }
       > div {
         text-align: center;
-        flex:1;
+        flex: 1;
         p {
           &:nth-child(1) {
             font-size: 20px;

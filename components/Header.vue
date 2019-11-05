@@ -74,11 +74,11 @@ export default {
           name: "首页",
           path: "/"
         },
-        { id: 2, name: "旅游攻略", path: "/" },
+        { id: 2, name: "旅游攻略", path: "/post" },
         {
           id: 3,
           name: "酒店",
-          path: "/"
+          path: "/hotel"
         },
         {
           id: 4,

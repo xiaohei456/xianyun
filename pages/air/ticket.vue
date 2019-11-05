@@ -60,11 +60,11 @@
         <ul>
           <li v-for='(item,index) in search_arr' :key='index'>
             <div class="info">
-              <p>天津-天水</p>
-              <span>2019-13-32</span>
+              <p>{{item.departCity}}-{{item.destCity}}</p>
+              <span>{{item.departDate}}</span>
             </div>
             <div class="btn">
-              <el-button type="warning" size="mini">选择</el-button>
+              <el-button type="warning" size="mini" @click='$router.push({path:"/air/ticket",query:item})'>选择</el-button>
             </div>
           </li>
         </ul>
@@ -100,13 +100,14 @@ export default {
       // 每一页的容量
       pageSize: 10,
       // 搜索记录
-      search_arr:JSON.parse(localStorage.getItem('search_ticket'))||[]
+      search_arr:[]
     };
   },
   mounted() {
     // 组件挂载后，通过参数获取相应的飞机票数据
     // 第一次获取机票数据
     this.getData(true);
+    this.search_arr=JSON.parse(localStorage.getItem('search_ticket'))||[]
   },
   // 注册组件
   components: {
@@ -126,7 +127,7 @@ export default {
           this.ticketData = res.data;
           console.log(res.data)
           // 此时筛选对的数据等于全部数据
-          this.fliterList=res.data
+          this.fliterList=res.data.flights
           // 所有的机票总量
           this.total = res.data.total;
           // 当前页面需要展示的数据
@@ -142,12 +143,13 @@ export default {
       } else {
         // 如果不是第一次请求数据了，那么本地已经有了数据，就不用再发送axios取请求数据了
         // 需要展示在当前页面的机票列表数据是
+        
         this.currentData = this.fliterList.slice(
           (this.pageIndex - 1) * this.pageSize,
           this.pageIndex * this.pageSize
         );
         // 总量
-        this.total = this.currentData.length;
+        this.total = this.fliterList.length;
       }
     },
     handleSizeChange(value) {
