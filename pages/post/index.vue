@@ -8,19 +8,24 @@
           <input type="hidden" v-model="city" >
 
       </div>
-      <div class="main">
+      <div class="main" >
           <!-- 搜索 -->
           <div class="search">
               <input type="text" v-model='inpvalue' @blur='inpBlur'>
               <i class="el-icon-zoom-out fdj"></i>
-              <p><span>推荐：</span><span>广州</span><span>上海</span><span>北京</span></p>
+              <p><span>推荐：</span><span @click='$router.push("/post?city=广州")'>广州</span>
+              <span  @click='$router.push("/post?city=上海")' >上海</span><span  @click='$router.push("/post?city=北京")' > 北京</span>
+              <span @click='$router.push("/post")'  >全部</span>
+              </p>
           </div>
           <!-- 推荐攻略 -->
-          <div class="list">
-               <postList :postList='postList' />
+          <div class="list" v-if='postList.length'>
+               <postList :postList='currentData' @getCurrentData='getCurrentData' :total='postList.length' />
 
           </div>
-         
+         <div class="nomain" v-else>
+             没得更多类容了.....
+         </div>
           
       </div>
 
@@ -35,7 +40,8 @@ export default {
     data(){
         return {
             postList:[],
-            inpvalue:this.$route.query.city
+            inpvalue:this.$route.query.city,
+            currentData:[]
     
         }
 
@@ -52,7 +58,9 @@ export default {
             this.$axios.get('/posts',{params:{city}})
             .then(res=>{
                 this.postList=res.data.data
-                console.log(this.postList)
+               
+                this.getCurrentData({})
+                
             })
             return this.$route.query.city
         }
@@ -61,7 +69,16 @@ export default {
         
     inpBlur(){
         this.$router.push({path:'/post',query:{city:this.inpvalue}})
-    }
+    },
+    
+        getCurrentData({pagesize,pageindex}){
+           let size=pagesize||1
+           let index=pageindex||1
+           
+            this.currentData=this.postList.slice((index-1)*size,index*size)
+            console.log(this.currentData)
+             console.log(this.postList)
+        }
     }
 
 }
@@ -87,6 +104,7 @@ export default {
     }
     .main{
         flex:1;
+        min-height:700px;
         .search{
             width:100%;
             position: relative;
@@ -111,10 +129,22 @@ export default {
                     padding:12px 3px;
                     font-size:12px;
                     color:#666;
+                    cursor: pointer;
+                    &:hover{
+                        color:rgb(55, 55, 99);
+                        text-decoration: underline;
+                    }
         
                 }
             }
         }
+    }
+    .nomain{
+        height:500px;
+        font-size:30px;
+        line-height:500px;
+        color:#999;
+        text-align:center;
     }
 
 }

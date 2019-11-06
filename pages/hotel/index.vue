@@ -40,7 +40,7 @@ export default {
   mounted() {
   
     // 获取城市id
-    // this.city=+this.$route.query.city
+    this.city=+this.$route.query.city
     // 发送axios请求数据
     this.$axios.get('/hotels',{params:{city:this.city}})
     .then(res=>{
@@ -52,6 +52,20 @@ export default {
   //   注册组件
   components: {
     Describe,Strategy,hotelList
+  },
+  watch:{
+    $route(){
+       // 获取城市id
+    this.city=+this.$route.query.city
+    // 发送axios请求数据
+    this.$axios.get('/hotels',{params:{city:this.city}})
+    .then(res=>{
+      this.hotelsList=res.data.data
+      this.currentHotelList=res.data.data
+    })
+
+
+    }
   }
 };
 </script>

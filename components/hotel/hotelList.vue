@@ -147,6 +147,8 @@
 export default {
   data() {
     return {
+      // 当前城市id
+      city:this.$route.query.city||74,
       price: 0,
       max: 4000,
       //酒店分类项目
@@ -243,12 +245,23 @@ export default {
     }
   },
   mounted() {
-    this.getData(true);
+    this.getData(true,{city:this.$route.query.city||74});
     this.$axios.get("/hotels/options").then(res => {
       this.hotelcate = res.data.data;
       // console.log(this.hotelcate);
     });
+  },
+  watch:{
+    $route(){
+       this.getData(true,{city:this.$route.query.city||74});
+    this.$axios.get("/hotels/options").then(res => {
+      this.hotelcate = res.data.data;
+      // console.log(this.hotelcate);
+    });
+
+    }
   }
+
 };
 </script>
 

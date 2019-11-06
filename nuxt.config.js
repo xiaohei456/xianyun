@@ -24,14 +24,20 @@ export default {
   */
   css: [
     'element-ui/lib/theme-chalk/index.css',
-    '@/assets/style/main.css'
+    '@/assets/style/main.css',
+    'quill/dist/quill.snow.css',
+
+    'quill/dist/quill.bubble.css',
+
+    'quill/dist/quill.core.css',
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
     '@/plugins/element-ui',
-    '@/plugins/axios'
+    '@/plugins/axios',
+    {src:'@/plugins/aa', ssr:false },
   ],
   /*
   ** Nuxt.js dev-modules

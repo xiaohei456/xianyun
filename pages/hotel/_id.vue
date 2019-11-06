@@ -6,7 +6,7 @@
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/hotel' }">酒店</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/hotel' }">南京酒店</el-breadcrumb-item>
-        <el-breadcrumb-item>好来阁商务酒店</el-breadcrumb-item>
+        <el-breadcrumb-item>{{hoteldata.name}}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <!-- 宾馆招牌 -->

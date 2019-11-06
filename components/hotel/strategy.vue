@@ -33,31 +33,50 @@
         </span>
         <div>
           <span>
-            <el-tooltip class="item" effect="dark" content="等级评定是针对房价，设施和服务等各方面水平的综合评估" placement="bottom">
-             <span>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="等级评定是针对房价，设施和服务等各方面水平的综合评估"
+              placement="bottom"
+            >
+              <span>
                 <i class="el-icon-service"></i>
-              <i class="el-icon-service"></i>
-              <i class="el-icon-service"></i>
-              ￥338　
-             </span>
+                <i class="el-icon-service"></i>
+                <i class="el-icon-service"></i>
+                ￥338
+              </span>
             </el-tooltip>
           </span>
-          <span><el-tooltip class="item" effect="dark" content="等级评定是针对房价，设施和服务等各方面水平的综合评估" placement="bottom">
-             <span>
+          <span>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="等级评定是针对房价，设施和服务等各方面水平的综合评估"
+              placement="bottom"
+            >
+              <span>
                 <i class="el-icon-service"></i>
-              <i class="el-icon-service"></i>
-              <i class="el-icon-service"></i>
-              ￥688　
-             </span>
-            </el-tooltip></span>
-          <span><el-tooltip class="item" effect="dark" content="等级评定是针对房价，设施和服务等各方面水平的综合评估" placement="bottom">
-             <span>
                 <i class="el-icon-service"></i>
-              <i class="el-icon-service"></i>
-              <i class="el-icon-service"></i>
-              ￥1288　
-             </span>
-            </el-tooltip></span>
+                <i class="el-icon-service"></i>
+                ￥688
+              </span>
+            </el-tooltip>
+          </span>
+          <span>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="等级评定是针对房价，设施和服务等各方面水平的综合评估"
+              placement="bottom"
+            >
+              <span>
+                <i class="el-icon-service"></i>
+                <i class="el-icon-service"></i>
+                <i class="el-icon-service"></i>
+                ￥1288
+              </span>
+            </el-tooltip>
+          </span>
         </div>
       </div>
     </div>
@@ -82,28 +101,60 @@ export default {
       default: []
     }
   },
+  methods: {
+    getmarck(isf) {
+      if (isf) {
+        let that = this;
+        //    初始化显示酒店列表地图
+        window.onload = function() {
+          var map = new AMap.Map("hotelContainer", {
+            zoom: 7, //级别
+            center: [
+              that.hotelList[0].location.longitude,
+              that.hotelList[0].location.latitude
+            ] //中心点坐标
+          });
+          // var toolbar = new AMap.ToolBar();
+          // map.addControl(toolbar);
+          that.hotelList.forEach((v, i) => {
+            var marker = new AMap.Marker({
+              position: new AMap.LngLat(
+                v.location.longitude,
+                v.location.latitude
+              ),
+              title: v.address
+            });
+            map.add(marker);
+          });
+        };
+      }else{
+        this
+        var map = new AMap.Map("hotelContainer", {
+            zoom: 7, //级别
+            center: [
+              this.hotelList[0].location.longitude,
+              this.hotelList[0].location.latitude
+            ] //中心点坐标
+          });
+          // var toolbar = new AMap.ToolBar();
+          // map.addControl(toolbar);
+          this.hotelList.forEach((v, i) => {
+            var marker = new AMap.Marker({
+              position: new AMap.LngLat(
+                v.location.longitude,
+                v.location.latitude
+              ),
+              title: v.address
+            });
+            map.add(marker);
+          });
+
+      }
+    }
+  },
   mounted() {
     setTimeout(() => {
-    let that = this;
-    window.onload = function() {
-      //    初始化显示酒店列表地图
-      var map = new AMap.Map("hotelContainer", {
-        zoom: 7, //级别
-        center: [
-          that.hotelList[0].location.longitude,
-          that.hotelList[0].location.latitude
-        ] //中心点坐标
-      });
-      // var toolbar = new AMap.ToolBar();
-      // map.addControl(toolbar);
-      that.hotelList.forEach((v, i) => {
-        var marker = new AMap.Marker({
-          position: new AMap.LngLat(v.location.longitude, v.location.latitude),
-          title: v.address
-        });
-        map.add(marker);
-      });
-    };
+      this.getmarck(true);
     }, 1000);
 
     var url =
@@ -112,16 +163,24 @@ export default {
     jsapi.charset = "utf-8";
     jsapi.src = url;
     document.head.appendChild(jsapi);
-      
+
     // 获取城市景点
     this.$axios.get("/cities", { params: { name: "南京" } }).then(res => {
       this.scenics = res.data.data[0].scenics;
     });
-    
   },
   watch: {
-    hotelList() {
-      // console.log(this.hotelList);
+    $route() {
+      // 获取城市id
+     let city=+this.$route.query.city
+    // 发送axios请求数据
+    this.$axios.get('/hotels',{params:{city}})
+    .then(res=>{
+      this.hotelsList=res.data.data
+       this.getmarck(false);
+    })
+     
+      console.log(this.hotelList);
     }
   }
 };
@@ -147,7 +206,7 @@ export default {
     > div {
       display: flex;
       cursor: pointer;
-      padding:8px 0;
+      padding: 8px 0;
       span {
         width: 70px;
       }

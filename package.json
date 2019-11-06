@@ -16,7 +16,8 @@
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "nuxt": "^2.0.0",
-    "qrcode": "^1.4.2"
+    "qrcode": "^1.4.2",
+    "vue-quill-editor": "^3.0.6"
   },
   "devDependencies": {}
 }

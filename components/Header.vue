@@ -78,7 +78,7 @@ export default {
         {
           id: 3,
           name: "酒店",
-          path: "/hotel"
+          path: "/hotel?city=74"
         },
         {
           id: 4,
