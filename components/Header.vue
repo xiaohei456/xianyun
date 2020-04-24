@@ -10,7 +10,7 @@
             :to="item.path"
             v-for="(item,index) in linkList"
             :key="item.id"
-            :class="{active:linkIndex===index}"
+            :class="{active:linkIndex==index}"
           >
             <div @click="linkIndex=index">{{item.name}}</div>
           </nuxt-link>
@@ -86,7 +86,7 @@ export default {
           path: "/air"
         }
       ],
-      linkIndex: ""
+      linkIndex: "0"
     };
   },
   mounted() {

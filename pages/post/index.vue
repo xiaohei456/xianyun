@@ -19,11 +19,11 @@
               </p>
           </div>
           <!-- 推荐攻略 -->
-          <div class="list" v-if='postList.length'>
+          <div class="list">
                <postList :postList='currentData' @getCurrentData='getCurrentData' :total='postList.length' />
 
           </div>
-         <div class="nomain" v-else>
+         <div class="nomain" v-if='postList.length==0'>
              没得更多类容了.....
          </div>
           
